@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProjectGuid>{69736B6C-1162-4F45-8DA7-FE8AFCCCD88A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>WebRcon</RootNamespace>
+    <AssemblyName>WebRcon.core</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Externalconsole>true</Externalconsole>
+    <PlatformTarget>x86</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Externalconsole>true</Externalconsole>
+    <PlatformTarget>x86</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Command System\ArgumentsParser.cs" />
+    <Compile Include="Command System\CommandAttribute.cs" />
+    <Compile Include="Command System\CommandAttributeLoader.cs" />
+    <Compile Include="Command System\CommandAttributeVerifier.cs" />
+    <Compile Include="Command System\CommandBase.cs" />
+    <Compile Include="Command System\CommandExecuter.cs" />
+    <Compile Include="Command System\ParsedCommand.cs" />
+    <Compile Include="Command System\CommandsManager.cs" />
+    <Compile Include="Command System\CommandTypeInfo.cs" />
+    <Compile Include="Command System\CommandTypes.cs" />
+    <Compile Include="Command System\Exceptions.cs" />
+    <Compile Include="Command System\ParserAttribute.cs" />
+    <Compile Include="Command System\Parsers.cs" />
+    <Compile Include="Command System\ReflectionFinder.cs" />
+    <Compile Include="Command System\Signature.cs" />
+    <Compile Include="Command System\SignatureBuilder.cs" />
+    <Compile Include="MessageBuffer.cs" />
+    <Compile Include="Messages\CommandInfoMessage.cs" />
+    <Compile Include="Messages\CommandMessage.cs" />
+    <Compile Include="Messages\GenericMessage.cs" />
+    <Compile Include="Messages\MessageBase.cs" />
+    <Compile Include="Messages\LoginMessage.cs" />
+    <Compile Include="Messages\NewBoxMessage.cs" />
+    <Compile Include="Messages\PingMessage.cs" />
+    <Compile Include="Messages\UpdateBoxMessage.cs" />
+    <Compile Include="Messages\UpdateContainerMessage.cs" />
+    <Compile Include="NetworkReader.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="NetworkMessage.cs" />
+    <Compile Include="Client.cs" />
+    <Compile Include="Containers\Container.cs" />
+    <Compile Include="Containers\Box.cs" />
+    <Compile Include="Containers\Tab.cs" />
+    <Compile Include="Utils\Config.cs" />
+    <Compile Include="Utils\Exceptions.cs" />
+    <Compile Include="Utils\Enums.cs" />
+    <Compile Include="Messages\WelcomeMessage.cs" />
+    <Compile Include="Messages\LoginOkMessage.cs" />
+    <Compile Include="Messages\ErrorMessage.cs" />
+    <Compile Include="Messages\NewTabMessage.cs" />
+    <Compile Include="Messages\NewContainerMessage.cs" />
+    <Compile Include="Messages\LogLineMessage.cs" />
+    <Compile Include="WebConsole.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>
