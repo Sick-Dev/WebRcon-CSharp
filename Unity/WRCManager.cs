@@ -99,7 +99,7 @@ public sealed class WRCManager : MonoBehaviour {
         console.onLinked += OnLinked;
         console.onUnlinked += OnUnlinked;
         console.onDisconnected += OnDisconnected;
-        console.onInnerExceptionThrown += OnInnerExceptionThrown;
+        console.onInnerExceptionThrown += OnInternalExceptionThrown;
         console.onError += OnError;
         console.onCommand += OnCommand;
     }
@@ -116,8 +116,8 @@ public sealed class WRCManager : MonoBehaviour {
         disconnectedError = error;
     }
 
-    void OnInnerExceptionThrown(Exception exception) {
-        Debug.Log("Inner Exception: " + exception.ToString());
+    void OnInternalExceptionThrown(Exception exception) {
+        Debug.LogError("Inner Exception: " + exception.ToString());
         innerExceptionBuffer.Add(exception);
     }
 

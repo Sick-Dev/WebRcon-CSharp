@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using SickDev.CommandSystem;
 
 namespace WebRcon{
     public delegate void OnInnerExceptionThrownHandler(Exception exception);
@@ -28,6 +29,11 @@ namespace WebRcon{
         public event OnDisconnectedHandler onDisconnected;
         public event OnErrorHandler onError;
         public event OnCommandHandler onCommand;
+
+        public WebConsole() { }
+        public WebConsole(string cKey) {
+            this.cKey = cKey;
+        }
 
         public void Initialize() {
             if (isInitialized)
@@ -96,6 +102,8 @@ namespace WebRcon{
         void CreateCommandsManager() {
             commandsManager = new CommandsManager();
             commandsManager.onCommandAdded += OnCommandAdded;
+            CommandsManager.onExceptionThrown += OnExceptionWasThrown;
+            CommandsManager.onMessage += OnCommandSystemMessage;
             commandsManager.Load();
         }
 
@@ -205,7 +213,7 @@ namespace WebRcon{
         public T GetContainer<T>(ushort id) where T:Container{
             return containers.Find(x => x.id == id) as T;
         }
-
+        
         internal static void OnExceptionWasThrown(Exception exception) {
             if (initializedInstance == null)
                 return;
@@ -216,6 +224,10 @@ namespace WebRcon{
             catch { }
              
             initializedInstance.OnExceptionThrown(exception);
+        }
+
+        void OnCommandSystemMessage(string message) {
+            defaultTab.Log(message);
         }
     }
 }

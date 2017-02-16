@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using SickDev.CommandSystem;
 
 namespace WebRcon {
     internal static partial class Parsers {

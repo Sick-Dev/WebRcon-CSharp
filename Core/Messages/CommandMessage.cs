@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using SickDev.CommandSystem;
 
 namespace WebRcon {
     public class CommandMessage : MessageBase {

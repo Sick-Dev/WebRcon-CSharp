@@ -52,25 +52,12 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CommandSystem">
+      <HintPath>.\CommandSystem.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Command System\ArgumentsParser.cs" />
-    <Compile Include="Command System\CommandAttribute.cs" />
-    <Compile Include="Command System\CommandAttributeLoader.cs" />
-    <Compile Include="Command System\CommandAttributeVerifier.cs" />
-    <Compile Include="Command System\CommandBase.cs" />
-    <Compile Include="Command System\CommandExecuter.cs" />
-    <Compile Include="Command System\ParsedCommand.cs" />
-    <Compile Include="Command System\CommandsManager.cs" />
-    <Compile Include="Command System\CommandTypeInfo.cs" />
-    <Compile Include="Command System\CommandTypes.cs" />
-    <Compile Include="Command System\Exceptions.cs" />
-    <Compile Include="Command System\ParserAttribute.cs" />
-    <Compile Include="Command System\Parsers.cs" />
-    <Compile Include="Command System\ReflectionFinder.cs" />
-    <Compile Include="Command System\Signature.cs" />
-    <Compile Include="Command System\SignatureBuilder.cs" />
     <Compile Include="MessageBuffer.cs" />
     <Compile Include="Messages\CommandInfoMessage.cs" />
     <Compile Include="Messages\CommandMessage.cs" />
