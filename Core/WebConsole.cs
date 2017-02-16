@@ -100,10 +100,11 @@ namespace WebRcon{
         }
 
         void CreateCommandsManager() {
-            commandsManager = new CommandsManager();
-            commandsManager.onCommandAdded += OnCommandAdded;
             CommandsManager.onExceptionThrown += OnExceptionWasThrown;
             CommandsManager.onMessage += OnCommandSystemMessage;
+            commandsManager = new CommandsManager();
+            commandsManager.AddAssemblyWithCommands("WebRcon.core.dll");
+            commandsManager.onCommandAdded += OnCommandAdded;
             commandsManager.Load();
         }
 
