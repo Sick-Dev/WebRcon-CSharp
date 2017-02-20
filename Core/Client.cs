@@ -29,6 +29,7 @@ namespace WebRcon{
 
         void OnPing(PingMessage message) {
             lastPing = DateTime.Now;
+            Send(new PongMessage().Build());
         }
 
 		public void ConnectViaIP(IPAddress ip, int port, OnConnectionAttempt callback){
