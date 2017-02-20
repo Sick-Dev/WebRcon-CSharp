@@ -181,7 +181,7 @@ namespace WebRcon{
         }
 
         public void Close() {
-            if (!isLinked)
+            if (!isInitialized)
                 return;
             ChangeConnectionStatus(ConnectionStatus.Disconnected, ErrorCode.None);
             defaultTab.Log("Disconnecting");
