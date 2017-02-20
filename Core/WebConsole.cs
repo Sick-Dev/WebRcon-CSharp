@@ -228,7 +228,8 @@ namespace WebRcon{
         }
 
         void OnCommandSystemMessage(string message) {
-            defaultTab.Log(message);
+            if (isLinked)
+                defaultTab.Log(message);
         }
     }
 }
