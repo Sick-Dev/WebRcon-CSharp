@@ -33,6 +33,7 @@ namespace WebRcon{
         public WebConsole() { }
         public WebConsole(string cKey) {
             this.cKey = cKey;
+            CreateCommandsManager();
         }
 
         public void Initialize() {
@@ -95,7 +96,6 @@ namespace WebRcon{
             messageBuffer.UnRegisterHandler<LoginOkMessage>(OnLoginOk);
             defaultTab = CreateTab("Default");
             defaultTab.Log("Welcome to WebRcon v."+Config.protocolVersion+" for "+Config.pluginApi+". You are linked and ready to start.");
-            CreateCommandsManager();
             ChangeConnectionStatus(ConnectionStatus.Linked);
         }
 
