@@ -2,7 +2,13 @@
 
 namespace WebRcon{
 	public static partial class Config	{
-		internal const string host = "webrcon.com";
+        internal const string host =
+#if DEBUG
+        "test.webrcon.com";
+#else
+        "webrcon.com";
+#endif
+
         internal const int port = 8004;
         public static int maxPingTimeout = 5000;
 		public static int readInterval = 200;
