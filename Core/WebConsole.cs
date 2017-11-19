@@ -97,6 +97,7 @@ namespace WebRcon{
             defaultTab = CreateTab("Default");
             defaultTab.Log("Welcome to WebRcon v."+Config.protocolVersion+" for "+Config.pluginApi+". You are linked and ready to start.");
             ChangeConnectionStatus(ConnectionStatus.Linked);
+            commandsManager.Load();
         }
 
         void CreateCommandsManager() {
@@ -105,7 +106,6 @@ namespace WebRcon{
             commandsManager = new CommandsManager();
             commandsManager.AddAssemblyWithCommands("WebRcon.core.dll");
             commandsManager.onCommandAdded += OnCommandAdded;
-            commandsManager.Load();
         }
 
         void OnCommandAdded(CommandBase command) {

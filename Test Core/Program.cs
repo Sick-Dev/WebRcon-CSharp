@@ -1,11 +1,16 @@
-﻿using SickDev.CommandSystem;
-using WebRcon;
-using System;
-using System.Linq;
+﻿using WebRcon;
 using System.Threading;
-using System.Reflection;
+using SickDev.CommandSystem;
 
-class Program {
-    static void Main() {
+namespace Test {
+    class Program {
+        static void Main(string[] args) {
+            WebConsole console = new WebConsole("JEOT2W5RO3");
+            console.commandsManager.AddAssemblyWithCommands("");
+            console.Initialize();
+            while(true)
+                Thread.Sleep(1000);
+            //console.Close();
+        }
     }
 }
