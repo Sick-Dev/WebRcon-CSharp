@@ -29,6 +29,7 @@ namespace WebRcon{
         public event OnDisconnectedHandler onDisconnected;
         public event OnErrorHandler onError;
         public event OnCommandHandler onCommand;
+        public event Action<Tab> onTabClosed;
 
         public WebConsole() { }
         public WebConsole(string cKey) {
@@ -54,6 +55,7 @@ namespace WebRcon{
             client.onConnectionBroken += OnConnectionBroken;
             messageBuffer.RegisterHandler<WelcomeMessage>(OnWelcome);
             messageBuffer.RegisterHandler<CommandMessage>(OnCommand);
+            messageBuffer.RegisterHandler<CloseTabMessage>(OnCloseTab);
             messageBuffer.RegisterHandler<ErrorMessage>(OnError);
         }
 
@@ -214,7 +216,24 @@ namespace WebRcon{
         public T GetContainer<T>(ushort id) where T:Container{
             return containers.Find(x => x.id == id) as T;
         }
-        
+
+        public void CloseTab(ushort id) {
+            CloseTab(GetContainer<Tab>(id));
+        }
+
+        public void CloseTab(Tab tab) {
+            MessageBase message = new CloseTabMessage(tab);
+            NetworkMessage netMessage = message.Build();
+            client.Send(netMessage);
+        }
+
+        void OnCloseTab(CloseTabMessage message) {
+            Tab tab = GetContainer<Tab>(message.id);
+            containers.Remove(tab);
+            if(onTabClosed != null)
+                onTabClosed(tab);
+        }
+
         internal static void OnExceptionWasThrown(Exception exception) {
             if (initializedInstance == null)
                 return;

@@ -4,11 +4,7 @@ namespace WebRcon {
     internal class LoginMessage : MessageBase {
         string cKey;
 
-        internal override MessageType messageType{
-            get{
-                return MessageType.Login;
-            }
-        }
+        internal override MessageType messageType{get{return MessageType.Login;}}
 
         public LoginMessage(string cKey) {
             this.cKey=cKey;
