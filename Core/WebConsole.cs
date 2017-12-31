@@ -145,15 +145,14 @@ namespace WebRcon{
             ErrorCode error = message.code;
 
             switch (error) {
-            case ErrorCode.CkeyAlreadyInUse:
-            case ErrorCode.CkeyNotFound:
             case ErrorCode.ProtocolVersionMismatch:
+            case ErrorCode.CkeyNotFound:
+            case ErrorCode.CkeyAlreadyInUse:
+            case ErrorCode.GuestAccountExpired:
                 ChangeConnectionStatus(ConnectionStatus.Disconnected, error);
                 break;
-            default:
-                OnError(error);
-                break;
             }
+            OnError(error);
         }
 
        void OnUnlinked() {
@@ -211,6 +210,10 @@ namespace WebRcon{
 
         public Tab[] GetAllTabs() {
             return containers.Where(x => x is Tab).Cast<Tab>().ToArray();
+        }
+
+        public Tab GetTab(ushort id) {
+            return GetContainer<Tab>(id);
         }
 
         public T GetContainer<T>(ushort id) where T:Container{
