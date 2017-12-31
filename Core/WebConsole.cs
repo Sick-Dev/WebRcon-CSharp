@@ -31,10 +31,11 @@ namespace SickDev.WebRcon{
         public event OnCommandHandler onCommand;
         public event Action<Tab> onTabClosed;
 
-        public WebConsole() { }
-        public WebConsole(string cKey) {
+        public WebConsole():this(string.Empty) { }
+        public WebConsole(string cKey) : this(cKey, new Configuration()) { }
+        public WebConsole(string cKey, Configuration configuration) {
             this.cKey = cKey;
-            CreateCommandsManager();
+            CreateCommandsManager(configuration);
         }
 
         public void Initialize() {
@@ -102,15 +103,16 @@ namespace SickDev.WebRcon{
             commandsManager.Load();
         }
 
-        void CreateCommandsManager() {
+        void CreateCommandsManager(Configuration configuration) {
             CommandsManager.onExceptionThrown += OnExceptionWasThrown;
             CommandsManager.onMessage += OnCommandSystemMessage;
-            commandsManager = new CommandsManager();
-            commandsManager.AddAssemblyWithCommands("WebRcon.core.dll");
+
+            configuration.RegisterAssembly("WebRcon.core");
+            commandsManager = new CommandsManager(configuration);
             commandsManager.onCommandAdded += OnCommandAdded;
         }
 
-        void OnCommandAdded(CommandBase command) {
+        void OnCommandAdded(Command command) {
             CommandInfoMessage message = new CommandInfoMessage(command.name, command.signature.parameters, command.description);
             NetworkMessage netMessage = message.Build();
             client.Send(netMessage);
@@ -130,9 +132,9 @@ namespace SickDev.WebRcon{
 
             try {
                 CommandExecuter executer = commandsManager.GetCommandExecuter(message.parsedCommand);
-                if (executer.IsValidCommand()) {
+                if (executer.canBeExecuted) {
                     object result = executer.Execute();
-                    if (executer.HasReturnType())
+                    if (executer.hasReturnValue)
                         tab.Log(result.ToString());
                 }
             }

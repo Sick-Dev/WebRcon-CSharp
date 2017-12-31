@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using SickDev.WebRcon;
 
 namespace SickDev.WebRcon.Unity {
     public sealed class WRCManager : MonoBehaviour {

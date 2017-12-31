@@ -5,8 +5,7 @@ using SickDev.CommandSystem;
 namespace Test {
     class Program {
         static void Main(string[] args) {
-            WebConsole console = new WebConsole("2FFNTV104J");
-            console.commandsManager.AddAssemblyWithCommands("");
+            WebConsole console = new WebConsole("GTV1L8VSDZ");
             console.onError += Console_onError;
             console.onInnerExceptionThrown += Console_onInnerExceptionThrown;
             console.Initialize();
