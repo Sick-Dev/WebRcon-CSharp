@@ -119,7 +119,7 @@ namespace SickDev.WebRcon{
 
         public static MessageBase TransformMessage(MessageType messageType) {
             try {
-                Type type = Type.GetType("WebRcon."+messageType.ToString()+"Message");
+                Type type = Type.GetType("SickDev.WebRcon."+messageType.ToString()+"Message");
                 return (MessageBase)Activator.CreateInstance(type);
             }
             catch {

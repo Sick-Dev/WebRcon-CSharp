@@ -43,10 +43,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DllsExcluder.cs" />
     <Compile Include="EnumFlags.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UnityParsers.cs" />
     <Compile Include="WRCManager.cs" />
   </ItemGroup>
   <ItemGroup>

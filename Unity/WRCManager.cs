@@ -59,10 +59,6 @@ namespace SickDev.WebRcon.Unity {
             set { _logType = value; }
         }
 
-        static WRCManager() {
-            Config.dllsToExclude.AddRange(DllsExcluder.dllsToExclude);
-        }
-
         void Awake() {
             if(singleton != this) {
                 Destroy(this);
