@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WebRcon{
+namespace SickDev.WebRcon{
 	public class Tab:Container{
 
 		internal Tab(Client client, string name):base(client, name){}

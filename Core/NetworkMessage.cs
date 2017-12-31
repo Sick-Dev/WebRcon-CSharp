@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace WebRcon{
+namespace SickDev.WebRcon{
 	internal class NetworkMessage {
 
         const int headerSize = 3;

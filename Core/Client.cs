@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 
-namespace WebRcon{
+namespace SickDev.WebRcon{
 	internal class Client{
         public delegate void OnConnectionAttempt(bool succesful);
 

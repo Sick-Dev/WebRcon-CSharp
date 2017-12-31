@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using SickDev.CommandSystem;
 
-namespace WebRcon {
+namespace SickDev.WebRcon {
     public class CommandMessage : MessageBase {
         public ushort tabId { get; private set; }
         public ParsedCommand parsedCommand { get; private set; }

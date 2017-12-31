@@ -1,4 +1,4 @@
-﻿namespace WebRcon {
+﻿namespace SickDev.WebRcon.Unity {
     static class DllsExcluder {
         public static string[] dllsToExclude = {
            "UnityScript.Lang.dll",

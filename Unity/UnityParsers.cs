@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using SickDev.CommandSystem;
 
-namespace WebRcon {
+namespace SickDev.WebRcon.Unity {
     internal static partial class Parsers {
         [Parser(typeof(Vector2))]
         static Vector2 ParseVector2(string value) {

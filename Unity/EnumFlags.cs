@@ -1,3 +1,4 @@
 ﻿using UnityEngine;
-
-public class EnumFlagsAttribute : PropertyAttribute { }
+namespace SickDev.WebRcon.Unity {
+    public class EnumFlagsAttribute : PropertyAttribute { }
+}

@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using SickDev.CommandSystem;
 
-namespace WebRcon{
+namespace SickDev.WebRcon{
     public delegate void OnInnerExceptionThrownHandler(Exception exception);
     public delegate void OnDisconnectedHandler(ErrorCode error);
     public delegate void OnErrorHandler(ErrorCode error);

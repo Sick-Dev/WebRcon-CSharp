@@ -1,4 +1,4 @@
-﻿namespace WebRcon{
+﻿namespace SickDev.WebRcon{
     internal class NewTabMessage : NewContainerMessage{
 		public NewTabMessage(Tab tab):base(tab){}
 

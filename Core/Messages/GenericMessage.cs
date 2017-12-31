@@ -1,4 +1,4 @@
-﻿namespace WebRcon {
+﻿namespace SickDev.WebRcon {
     internal abstract class GenericMessage:MessageBase {
         internal override void FillInData(NetworkMessage message) {
             WriteHeader(message);

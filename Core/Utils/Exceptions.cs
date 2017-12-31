@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace WebRcon{
+namespace SickDev.WebRcon{
     public class WebRconException : Exception { }
 
 	public class AlreadyInitializedException : WebRconException { 

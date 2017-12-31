@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace WebRcon {
+namespace SickDev.WebRcon {
     abstract class UpdateContainerMessage:GenericMessage {
 
         ushort id;

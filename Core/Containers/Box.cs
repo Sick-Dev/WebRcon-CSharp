@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WebRcon{
+namespace SickDev.WebRcon{
     internal class Box:Container{
 
 		internal Box(Client client, string name):base(client, name){}

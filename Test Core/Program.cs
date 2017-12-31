@@ -1,4 +1,4 @@
-﻿using WebRcon;
+﻿using SickDev.WebRcon;
 using System.Threading;
 using SickDev.CommandSystem;
 

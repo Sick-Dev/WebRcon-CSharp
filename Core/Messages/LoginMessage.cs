@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace WebRcon {
+namespace SickDev.WebRcon {
     internal class LoginMessage : MessageBase {
         string cKey;
 

@@ -1,4 +1,4 @@
-﻿namespace WebRcon{
+﻿namespace SickDev.WebRcon{
     class CloseTabMessage:MessageBase {
         public ushort id { get; private set; }
 

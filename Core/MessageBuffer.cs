@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace WebRcon {
+namespace SickDev.WebRcon {
     internal class MessageBuffer {
         Queue<MessageBase> queue = new Queue<MessageBase>();
         Dictionary<Type, Action<MessageBase>> handlers = new Dictionary<Type, Action<MessageBase>>();

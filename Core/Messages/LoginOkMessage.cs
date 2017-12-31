@@ -1,4 +1,4 @@
-﻿namespace WebRcon{
+﻿namespace SickDev.WebRcon{
     internal class LoginOkMessage : MessageBase{
 	}
 }

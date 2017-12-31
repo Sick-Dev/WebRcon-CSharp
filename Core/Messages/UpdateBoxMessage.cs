@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace WebRcon {
+namespace SickDev.WebRcon {
     internal class UpdateBoxMessage :UpdateContainerMessage {
 
         string value;

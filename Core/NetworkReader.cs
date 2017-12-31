@@ -2,7 +2,7 @@
 using System.Net.Sockets;
 using System.Collections.Generic;
 
-namespace WebRcon {
+namespace SickDev.WebRcon {
     internal class NetworkReader {
 
         const int bytesReserverForSize = 2;

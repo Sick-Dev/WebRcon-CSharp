@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace WebRcon{
+namespace SickDev.WebRcon{
 	public static partial class Config	{
         internal const string host =
 #if DEBUG

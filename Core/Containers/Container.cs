@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace WebRcon{
+namespace SickDev.WebRcon{
 	public abstract class Container{
 		static Dictionary<Type, ushort> lastIds = new Dictionary<Type, ushort>();
 

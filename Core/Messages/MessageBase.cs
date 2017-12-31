@@ -1,5 +1,5 @@
 ﻿using System;
-namespace WebRcon {
+namespace SickDev.WebRcon {
     public abstract class MessageBase {
 
         internal virtual MessageType messageType{

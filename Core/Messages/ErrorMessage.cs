@@ -1,4 +1,4 @@
-﻿namespace WebRcon{
+﻿namespace SickDev.WebRcon{
 	class ErrorMessage : MessageBase {
 
         public ErrorCode code { get; private set; }

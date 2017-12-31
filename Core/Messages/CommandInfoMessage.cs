@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using System.Reflection;
 
-namespace WebRcon {
+namespace SickDev.WebRcon {
     public class CommandInfoMessage : MessageBase {
         string command;
         ParameterInfo[] args;
