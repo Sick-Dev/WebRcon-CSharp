@@ -15,6 +15,8 @@ namespace Test {
                     console.CreateTab(i.ToString());
                 //console.CloseTab(tab);
                 console.onTabClosed += x => System.Console.WriteLine("Tab "+x.id+" closed");
+                CommandsBuilder builder = new CommandsBuilder(typeof(Program));
+                console.commandsManager.Add(builder.Build());
             };
             while(true)
                 Thread.Sleep(1000);
@@ -27,6 +29,20 @@ namespace Test {
 
         private static void Console_onError(ErrorCode error) {
             System.Console.WriteLine(error.ToString());
+        }
+
+        public static float Max(float a, float b) {
+            if(a > b)
+                return a;
+            else
+                return b;
+        }
+
+        public static int Max(int a, int b) {
+            if(a > b)
+                return a;
+            else
+                return b;
         }
     }
 }
