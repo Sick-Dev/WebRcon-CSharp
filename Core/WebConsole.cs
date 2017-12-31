@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Linq;
 using System.Collections.Generic;
 using SickDev.CommandSystem;
@@ -129,18 +130,36 @@ namespace SickDev.WebRcon{
 
         public void ExecuteCommand(CommandMessage message) {
             Tab tab = GetContainer<Tab>(message.tabId);
-
-            try {
-                CommandExecuter executer = commandsManager.GetCommandExecuter(message.parsedCommand);
-                if (executer.canBeExecuted) {
+            CommandExecuter executer = commandsManager.GetCommandExecuter(message.parsedCommand);
+            if(executer.isValidCommand) {
+                try {
                     object result = executer.Execute();
-                    if (executer.hasReturnValue)
-                        tab.Log(result.ToString());
+                    if(executer.hasReturnValue) {
+                        string resultString = ConvertCommandResultToString(result);
+                        tab.Log(resultString);
+                    }
+                }
+                catch (CommandSystemException exception) {
+                    OnExceptionWasThrown(exception);
                 }
             }
-            catch (Exception e) {
-                OnExceptionWasThrown(e);
+        }
+
+        string ConvertCommandResultToString(object result) {
+            if(result == null)
+                return "null";
+            else if(result is Array) {
+                Array resultArray = (Array)result;
+                StringBuilder builder = new StringBuilder();
+                for(int i = 0; i < resultArray.Length; i++) {
+                    builder.Append(resultArray.GetValue(i).ToString());
+                    if(i < resultArray.Length - 1)
+                        builder.Append(", ");
+                }
+                return builder.ToString();
             }
+            else
+                return result.ToString();
         }
 
         void OnError(ErrorMessage message) {
