@@ -1,14 +1,13 @@
-﻿using System.Collections.Generic;
-
-namespace SickDev.WebRcon{
+﻿namespace SickDev.WebRcon{
 	public static partial class Config	{
         internal const string host =
 #if DEBUG
         "test.webrcon.com";
+#elif CONNECT_LOCALHOST
+        "localhost";
 #else
         "webrcon.com";
 #endif
-
         internal const int port = 8004;
         public static int maxPingTimeout = 5000;
 		public static int readInterval = 200;
