@@ -5,11 +5,10 @@ using SickDev.CommandSystem;
 namespace Test {
     class Program {
         static void Main(string[] args) {
-            WebConsole console = new WebConsole("GTV1L8VSDZ");
+            WebConsole console = new WebConsole("0M6EQVX8PI");
             console.onError += Console_onError;
             console.onInnerExceptionThrown += Console_onInnerExceptionThrown;
             console.Initialize();
-            console.Close();
             console.onLinked += () => {
                 console.GetContainer<Tab>(0).Log("<b>Lorem</b> ipsum dolor sit amet, consectetur adipiscing elit. Integer sagittis diam quis neque pretium lobortis. Fusce et arcu in ante vulputate dignissim nec vel mi. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Mauris ut congue lorem, eu ultricies urna. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec pretium ipsum vehicula orci mattis, vitae commodo urna tincidunt. Nam quis ultrices enim. Sed ullamcorper nunc finibus egestas accumsan. Duis nec enim faucibus nibh malesuada suscipit. Aliquam eleifend tortor nec ligula consectetur tincidunt. In aliquam blandit magna sit amet efficitur. ");
                 for(int i = 0; i < 20; i++)
