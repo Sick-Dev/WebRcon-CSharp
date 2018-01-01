@@ -206,7 +206,8 @@ namespace SickDev.WebRcon{
             if (!isInitialized)
                 return;
             ChangeConnectionStatus(ConnectionStatus.Disconnected, ErrorCode.None);
-            defaultTab.Log("Disconnecting");
+            if (isLinked)
+                defaultTab.Log("Disconnecting");
             client.Close();
         }
 
