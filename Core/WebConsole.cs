@@ -101,7 +101,7 @@ namespace SickDev.WebRcon{
             defaultTab = CreateTab("Default");
             defaultTab.Log("Welcome to WebRcon v."+Config.protocolVersion+" for "+Config.pluginApi+". You are linked and ready to start.");
             ChangeConnectionStatus(ConnectionStatus.Linked);
-            commandsManager.Load();
+            commandsManager.LoadCommands();
         }
 
         void CreateCommandsManager(Configuration configuration) {
