@@ -39,6 +39,43 @@ namespace SickDev.WebRcon{
             CreateCommandsManager(configuration);
         }
 
+        void CreateCommandsManager(Configuration configuration) {
+            CommandsManager.onExceptionThrown += OnExceptionWasThrown;
+            CommandsManager.onMessage += OnCommandSystemMessage;
+
+            configuration.RegisterAssembly("WebRcon.core");
+            commandsManager = new CommandsManager(configuration);
+            commandsManager.onCommandAdded += OnCommandAdded;
+        }
+
+        internal static void OnExceptionWasThrown(Exception exception) {
+            if (initializedInstance == null)
+                return;
+            try {
+                if (initializedInstance.defaultTab != null)
+                    initializedInstance.defaultTab.Log("Plugin internal exception: " + exception.ToString());
+            }
+            catch { }
+
+            initializedInstance.OnExceptionThrown(exception);
+        }
+
+        void OnExceptionThrown(Exception exception) {
+            if (onInnerExceptionThrown != null)
+                onInnerExceptionThrown(exception);
+        }
+
+        void OnCommandSystemMessage(string message) {
+            if (isLinked)
+                defaultTab.Log(message);
+        }
+
+        void OnCommandAdded(Command command) {
+            CommandInfoMessage message = new CommandInfoMessage(command.name, command.signature.parameters, command.description);
+            NetworkMessage netMessage = message.Build();
+            client.Send(netMessage);
+        }
+
         public void Initialize() {
             if (isInitialized)
                 throw new AlreadyInitializedException();
@@ -61,16 +98,6 @@ namespace SickDev.WebRcon{
             messageBuffer.RegisterHandler<ErrorMessage>(OnError);
         }
 
-        void Connect() {
-            ChangeConnectionStatus(ConnectionStatus.Connecting);
-            client.ConnectViaHost(Config.host, Config.port, OnConnectionAttempt);
-        }
-
-        void OnConnectionAttempt(bool successful) {
-            if (!successful)
-                ChangeConnectionStatus(ConnectionStatus.Disconnected, ErrorCode.ConnectionError);
-        }
-
         void OnConnectionBroken() {
             ChangeConnectionStatus(ConnectionStatus.Disconnected, ErrorCode.ConnectionError);
         }
@@ -86,6 +113,22 @@ namespace SickDev.WebRcon{
                 OnDisconnected(error);
         }
 
+        void OnUnlinked() {
+            if (onUnlinked != null)
+                onUnlinked();
+        }
+
+        void OnLinked() {
+            if (onLinked != null)
+                onLinked();
+        }
+
+        void OnDisconnected(ErrorCode error) {
+            initializedInstance = null;
+            if (onDisconnected != null)
+                onDisconnected(error);
+        }
+
         void OnWelcome() {
             messageBuffer.UnRegisterHandler<WelcomeMessage>(OnWelcome);
             ChangeConnectionStatus(ConnectionStatus.Unlinked);
@@ -99,24 +142,9 @@ namespace SickDev.WebRcon{
         void OnLoginOk() {
             messageBuffer.UnRegisterHandler<LoginOkMessage>(OnLoginOk);
             defaultTab = CreateTab("Default");
-            defaultTab.Log("Welcome to WebRcon v."+Config.protocolVersion+" for "+Config.pluginApi+". You are linked and ready to start.");
+            defaultTab.Log("Welcome to WebRcon v." + Config.protocolVersion + " for " + Config.pluginApi + ". You are linked and ready to start.");
             ChangeConnectionStatus(ConnectionStatus.Linked);
             commandsManager.LoadCommands();
-        }
-
-        void CreateCommandsManager(Configuration configuration) {
-            CommandsManager.onExceptionThrown += OnExceptionWasThrown;
-            CommandsManager.onMessage += OnCommandSystemMessage;
-
-            configuration.RegisterAssembly("WebRcon.core");
-            commandsManager = new CommandsManager(configuration);
-            commandsManager.onCommandAdded += OnCommandAdded;
-        }
-
-        void OnCommandAdded(Command command) {
-            CommandInfoMessage message = new CommandInfoMessage(command.name, command.signature.parameters, command.description);
-            NetworkMessage netMessage = message.Build();
-            client.Send(netMessage);
         }
 
         void OnCommand(CommandMessage message) {
@@ -126,6 +154,42 @@ namespace SickDev.WebRcon{
                 onCommand(message);
             else
                 ExecuteCommand(message);
+        }
+
+        void OnCloseTab(CloseTabMessage message) {
+            Tab tab = GetContainer<Tab>(message.id);
+            containers.Remove(tab);
+            if (onTabClosed != null)
+                onTabClosed(tab);
+        }
+
+        void OnError(ErrorMessage message) {
+            ErrorCode error = message.code;
+
+            switch (error) {
+                case ErrorCode.ProtocolVersionMismatch:
+                case ErrorCode.CkeyNotFound:
+                case ErrorCode.CkeyAlreadyInUse:
+                case ErrorCode.GuestAccountExpired:
+                    ChangeConnectionStatus(ConnectionStatus.Disconnected, error);
+                    break;
+            }
+            OnError(error);
+        }
+
+        void OnError(ErrorCode error) {
+            if (onError != null)
+                onError(error);
+        }
+
+        void Connect() {
+            ChangeConnectionStatus(ConnectionStatus.Connecting);
+            client.ConnectViaHost(Config.host, Config.port, OnConnectionAttempt);
+        }
+
+        void OnConnectionAttempt(bool successful) {
+            if (!successful)
+                ChangeConnectionStatus(ConnectionStatus.Disconnected, ErrorCode.ConnectionError);
         }
 
         public void ExecuteCommand(CommandMessage message) {
@@ -160,46 +224,6 @@ namespace SickDev.WebRcon{
             }
             else
                 return result.ToString();
-        }
-
-        void OnError(ErrorMessage message) {
-            ErrorCode error = message.code;
-
-            switch (error) {
-            case ErrorCode.ProtocolVersionMismatch:
-            case ErrorCode.CkeyNotFound:
-            case ErrorCode.CkeyAlreadyInUse:
-            case ErrorCode.GuestAccountExpired:
-                ChangeConnectionStatus(ConnectionStatus.Disconnected, error);
-                break;
-            }
-            OnError(error);
-        }
-
-       void OnUnlinked() {
-            if (onUnlinked != null)
-                onUnlinked();
-        }
-
-        void OnLinked() {
-            if (onLinked != null)
-                onLinked();
-        }
-
-        void OnDisconnected(ErrorCode error) {
-            initializedInstance = null;
-            if (onDisconnected != null)
-                onDisconnected(error);
-        }
-
-        void OnError(ErrorCode error) {
-            if (onError != null)
-                onError(error);
-        }
-
-        void OnExceptionThrown(Exception exception) {
-            if (onInnerExceptionThrown != null)
-                onInnerExceptionThrown(exception);
         }
 
         public void Close() {
@@ -250,30 +274,6 @@ namespace SickDev.WebRcon{
             MessageBase message = new CloseTabMessage(tab);
             NetworkMessage netMessage = message.Build();
             client.Send(netMessage);
-        }
-
-        void OnCloseTab(CloseTabMessage message) {
-            Tab tab = GetContainer<Tab>(message.id);
-            containers.Remove(tab);
-            if(onTabClosed != null)
-                onTabClosed(tab);
-        }
-
-        internal static void OnExceptionWasThrown(Exception exception) {
-            if (initializedInstance == null)
-                return;
-            try {
-                if (initializedInstance.defaultTab != null)
-                    initializedInstance.defaultTab.Log("Plugin internal exception: " + exception.ToString());
-            }
-            catch { }
-             
-            initializedInstance.OnExceptionThrown(exception);
-        }
-
-        void OnCommandSystemMessage(string message) {
-            if (isLinked)
-                defaultTab.Log(message);
         }
     }
 }
