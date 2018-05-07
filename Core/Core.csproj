@@ -1,68 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProjectGuid>{69736B6C-1162-4F45-8DA7-FE8AFCCCD88A}</ProjectGuid>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1FDE2782-BCC2-4B6D-AC92-AC421FD06F5A}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>WebRcon</RootNamespace>
-    <AssemblyName>WebRcon.core</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Core</RootNamespace>
+    <AssemblyName>Core</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG</DefineConstants>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Externalconsole>true</Externalconsole>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <Prefer32Bit>false</Prefer32Bit>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <DebugType>full</DebugType>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Externalconsole>true</Externalconsole>
-    <PlatformTarget>x86</PlatformTarget>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Connection Localhost|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Connection Localhost\</OutputPath>
-    <DefineConstants>CONNECT_LOCALHOST</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CommandSystem">
@@ -72,42 +37,36 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BuiltInCommands.cs" />
+    <Compile Include="Client.cs" />
+    <Compile Include="Containers\Box.cs" />
+    <Compile Include="Containers\Container.cs" />
+    <Compile Include="Containers\Tab.cs" />
     <Compile Include="MessageBuffer.cs" />
     <Compile Include="Messages\CloseTabMessage.cs" />
     <Compile Include="Messages\CommandInfoMessage.cs" />
     <Compile Include="Messages\CommandMessage.cs" />
+    <Compile Include="Messages\ErrorMessage.cs" />
     <Compile Include="Messages\GenericMessage.cs" />
-    <Compile Include="Messages\MessageBase.cs" />
     <Compile Include="Messages\LoginMessage.cs" />
+    <Compile Include="Messages\LoginOkMessage.cs" />
+    <Compile Include="Messages\LogLineMessage.cs" />
+    <Compile Include="Messages\MessageBase.cs" />
     <Compile Include="Messages\NewBoxMessage.cs" />
+    <Compile Include="Messages\NewContainerMessage.cs" />
+    <Compile Include="Messages\NewTabMessage.cs" />
     <Compile Include="Messages\PingMessage.cs" />
     <Compile Include="Messages\PongMessage.cs" />
     <Compile Include="Messages\UpdateBoxMessage.cs" />
     <Compile Include="Messages\UpdateContainerMessage.cs" />
+    <Compile Include="Messages\WelcomeMessage.cs" />
+    <Compile Include="NetworkMessage.cs" />
     <Compile Include="NetworkReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="NetworkMessage.cs" />
-    <Compile Include="Client.cs" />
-    <Compile Include="Containers\Container.cs" />
-    <Compile Include="Containers\Box.cs" />
-    <Compile Include="Containers\Tab.cs" />
     <Compile Include="Utils\Config.cs" />
-    <Compile Include="Utils\Exceptions.cs" />
+    <Compile Include="Utils\ConsoleUtility.cs" />
     <Compile Include="Utils\Enums.cs" />
-    <Compile Include="Messages\WelcomeMessage.cs" />
-    <Compile Include="Messages\LoginOkMessage.cs" />
-    <Compile Include="Messages\ErrorMessage.cs" />
-    <Compile Include="Messages\NewTabMessage.cs" />
-    <Compile Include="Messages\NewContainerMessage.cs" />
-    <Compile Include="Messages\LogLineMessage.cs" />
+    <Compile Include="Utils\Exceptions.cs" />
     <Compile Include="WebConsole.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
