@@ -33,7 +33,7 @@ namespace SickDev.WebRcon{
         public event Action<Tab> onTabClosed;
 
         public WebConsole():this(string.Empty) { }
-        public WebConsole(string cKey) : this(cKey, new Configuration(true)) { }
+        public WebConsole(string cKey, params string[] assembliesToRegister) : this(cKey, new Configuration(true, assembliesToRegister)) { }
         public WebConsole(string cKey, Configuration configuration) {
             this.cKey = cKey;
             CreateCommandsManager(configuration);
