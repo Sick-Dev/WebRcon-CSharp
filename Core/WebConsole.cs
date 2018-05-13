@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using SickDev.CommandSystem;
 
 namespace SickDev.WebRcon{
-    public delegate void OnInnerExceptionThrownHandler(Exception exception);
+    public delegate void OnExceptionThrownHandler(Exception exception);
     public delegate void OnDisconnectedHandler(ErrorCode error);
     public delegate void OnErrorHandler(ErrorCode error);
     public delegate void OnCommandHandler(CommandMessage message);
@@ -24,7 +24,7 @@ namespace SickDev.WebRcon{
         public bool isInitialized { get { return status != ConnectionStatus.Disconnected; } }
         MessageBuffer messageBuffer { get { return client.buffer; } }
         
-        public event OnInnerExceptionThrownHandler onInnerExceptionThrown;
+        public event OnExceptionThrownHandler onExceptionThrown;
         public event Action onUnlinked;
         public event Action onLinked;
         public event OnDisconnectedHandler onDisconnected;
@@ -61,8 +61,8 @@ namespace SickDev.WebRcon{
         }
 
         void OnExceptionThrown(Exception exception) {
-            if (onInnerExceptionThrown != null)
-                onInnerExceptionThrown(exception);
+            if (onExceptionThrown != null)
+                onExceptionThrown(exception);
         }
 
         void OnCommandSystemMessage(string message) {
