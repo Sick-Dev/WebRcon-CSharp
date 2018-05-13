@@ -262,7 +262,7 @@ namespace SickDev.WebRcon{
             return GetContainer<Tab>(id);
         }
 
-        public T GetContainer<T>(ushort id) where T:Container{
+        T GetContainer<T>(ushort id) where T:Container{
             return containers.Find(x => x.id == id) as T;
         }
 
