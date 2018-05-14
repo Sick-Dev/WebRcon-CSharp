@@ -44,8 +44,9 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CommandSystem">
-      <HintPath>..\Core\CommandSystem.dll</HintPath>
+    <Reference Include="CommandSystem, Version=0.1.6575.23815, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Core\CommandSystem\CommandSystem.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>

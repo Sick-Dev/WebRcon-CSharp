@@ -66,7 +66,7 @@ namespace SickDev.WebRcon{
         }
 
         void OnCommandSystemMessage(string message) {
-            if (isLinked)
+            if (isLinked && defaultTab != null)
                 defaultTab.Log(message);
         }
 
@@ -165,6 +165,8 @@ namespace SickDev.WebRcon{
 
         void OnError(ErrorMessage message) {
             ErrorCode error = message.code;
+            if (isLinked && defaultTab != null)
+                defaultTab.Log("Error: " + error.ToString() + " - Code: " + (int)error);
 
             switch (error) {
                 case ErrorCode.ProtocolVersionMismatch:
