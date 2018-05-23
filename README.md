@@ -2,7 +2,7 @@
 
 1. [Requirements](#requirements)
 2. [Installation](#installation)
-3. [Ussage](#usage)
+3. [Usage](#usage)
 4. [FAQ](#faq)
 5. [License](#license)
 6. [About](#about)
