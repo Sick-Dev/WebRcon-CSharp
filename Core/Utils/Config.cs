@@ -12,7 +12,5 @@
         public static int maxPingTimeout = 5000;
 		public static int readInterval = 200;
         public static int processInterval = 200;
-        internal const string pluginApi = ".Net/Mono C#";
-		internal const string protocolVersion = "alpha";
 	}
 }

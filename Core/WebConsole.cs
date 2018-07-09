@@ -23,7 +23,9 @@ namespace SickDev.WebRcon{
         public bool isLinked { get { return status == ConnectionStatus.Linked; } }
         public bool isInitialized { get { return status != ConnectionStatus.Disconnected; } }
         MessageBuffer messageBuffer { get { return client.buffer; } }
-        
+        public virtual string pluginApi { get { return ".Net/Mono C#"; } }
+        public virtual string protocolVersion { get { return "alpha"; } }
+
         public event OnExceptionThrownHandler onExceptionThrown;
         public event Action onUnlinked;
         public event Action onLinked;
@@ -134,7 +136,7 @@ namespace SickDev.WebRcon{
             ChangeConnectionStatus(ConnectionStatus.Unlinked);
             messageBuffer.RegisterHandler<LoginOkMessage>(OnLoginOk);
 
-            MessageBase login = new LoginMessage(cKey);
+            MessageBase login = new LoginMessage(cKey, protocolVersion, pluginApi);
             NetworkMessage netMessage = login.Build();
             client.Send(netMessage);
         }
@@ -142,7 +144,7 @@ namespace SickDev.WebRcon{
         void OnLoginOk() {
             messageBuffer.UnRegisterHandler<LoginOkMessage>(OnLoginOk);
             defaultTab = CreateTab("Default");
-            defaultTab.Log("Welcome to WebRcon v." + Config.protocolVersion + " for " + Config.pluginApi + ". You are linked and ready to start.");
+            defaultTab.Log("Welcome to WebRcon v." + protocolVersion + " for " + pluginApi + ". You are linked and ready to start.");
             ChangeConnectionStatus(ConnectionStatus.Linked);
             commandsManager.LoadCommands();
         }
