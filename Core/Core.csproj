@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Core</RootNamespace>
-    <AssemblyName>WebRCon.Core</AssemblyName>
+    <AssemblyName>WebRcon.Core</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>
