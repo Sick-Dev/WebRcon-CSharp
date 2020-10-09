@@ -12,7 +12,7 @@ namespace SickDev.WebRcon{
 		}
 	}
 
-	public class NonInitializedException : WebRconException { 
+	public class NotConnectedException : WebRconException { 
 		public override string Message{
 			get{
 				return typeof(WebConsole).Name + " is not yet initialized";

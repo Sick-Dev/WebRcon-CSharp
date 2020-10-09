@@ -13,22 +13,25 @@ namespace SickDev.WebRcon{
     public class WebConsole {
         public static WebConsole initializedInstance { get; private set; }
 
+#if DEBUG
+        string debugIP;
+#endif
         Client client;
         List<Container> containers;
         ConnectionStatus status = ConnectionStatus.Disconnected;
+        List<Command> commandsAdded = new List<Command>();
 
         public Tab defaultTab { get; private set; }
         public string cKey { get; set; }
         public CommandsManager commandsManager { get; private set; }
-        public bool isLinked { get { return status == ConnectionStatus.Linked; } }
+        public bool isConnected { get { return status == ConnectionStatus.Connected; } }
         public bool isInitialized { get { return status != ConnectionStatus.Disconnected; } }
         MessageBuffer messageBuffer { get { return client.buffer; } }
+        public string protocolVersion { get { return "alpha"; } }
         public virtual string pluginApi { get { return ".Net/Mono C#"; } }
-        public virtual string protocolVersion { get { return "alpha"; } }
 
         public event OnExceptionThrownHandler onExceptionThrown;
-        public event Action onUnlinked;
-        public event Action onLinked;
+        public event Action onConnected;
         public event OnDisconnectedHandler onDisconnected;
         public event OnErrorHandler onError;
         public event OnCommandHandler onCommand;
@@ -48,6 +51,7 @@ namespace SickDev.WebRcon{
             configuration.RegisterAssembly("WebRcon.core");
             commandsManager = new CommandsManager(configuration);
             commandsManager.onCommandAdded += OnCommandAdded;
+            commandsManager.onCommandRemoved += OnCommandRemoved;
         }
 
         internal static void OnExceptionWasThrown(Exception exception) {
@@ -68,14 +72,20 @@ namespace SickDev.WebRcon{
         }
 
         void OnCommandSystemMessage(string message) {
-            if (isLinked && defaultTab != null)
+            if (!isConnected)
+                return;
+            if (defaultTab != null)
                 defaultTab.Log(message);
         }
 
         void OnCommandAdded(Command command) {
-            CommandInfoMessage message = new CommandInfoMessage(command.name, command.signature.parameters, command.description);
-            NetworkMessage netMessage = message.Build();
-            client.Send(netMessage);
+            commandsAdded.Add(command);
+            if (isConnected)
+                SendCommand(command);
+        }
+
+        void OnCommandRemoved(Command command) {
+            commandsAdded.Remove(command);
         }
 
         public void Initialize() {
@@ -91,6 +101,13 @@ namespace SickDev.WebRcon{
             Connect();
         }
 
+#if DEBUG
+        public void Initialize(string debugIP) {
+            this.debugIP = debugIP;
+            Initialize();
+        }
+#endif
+
         void SetupClient() {
             client = new Client();
             client.onConnectionBroken += OnConnectionBroken;
@@ -104,25 +121,18 @@ namespace SickDev.WebRcon{
             ChangeConnectionStatus(ConnectionStatus.Disconnected, ErrorCode.ConnectionError);
         }
 
-        void ChangeConnectionStatus(ConnectionStatus newStatus, ErrorCode error = ErrorCode.None) {
-            ConnectionStatus oldStatus = status;
-            status = newStatus;
-            if (oldStatus == ConnectionStatus.Linked && newStatus == ConnectionStatus.Unlinked)
-                OnUnlinked();
-            else if (newStatus == ConnectionStatus.Linked)
-                OnLinked();
-            else if (newStatus == ConnectionStatus.Disconnected)
+        void ChangeConnectionStatus(ConnectionStatus status, ErrorCode error = ErrorCode.None) {
+            ConnectionStatus oldStatus = this.status;
+            this.status = status;
+            if (oldStatus != ConnectionStatus.Connected && status == ConnectionStatus.Connected)
+                OnConnected();
+            else if (oldStatus != ConnectionStatus.Disconnected && status == ConnectionStatus.Disconnected)
                 OnDisconnected(error);
         }
 
-        void OnUnlinked() {
-            if (onUnlinked != null)
-                onUnlinked();
-        }
-
-        void OnLinked() {
-            if (onLinked != null)
-                onLinked();
+        void OnConnected() {
+            if (onConnected != null)
+                onConnected();
         }
 
         void OnDisconnected(ErrorCode error) {
@@ -133,7 +143,6 @@ namespace SickDev.WebRcon{
 
         void OnWelcome() {
             messageBuffer.UnRegisterHandler<WelcomeMessage>(OnWelcome);
-            ChangeConnectionStatus(ConnectionStatus.Unlinked);
             messageBuffer.RegisterHandler<LoginOkMessage>(OnLoginOk);
 
             MessageBase login = new LoginMessage(cKey, protocolVersion, pluginApi);
@@ -143,10 +152,26 @@ namespace SickDev.WebRcon{
 
         void OnLoginOk() {
             messageBuffer.UnRegisterHandler<LoginOkMessage>(OnLoginOk);
+
             defaultTab = CreateTab("Default");
-            defaultTab.Log("Welcome to WebRcon v." + protocolVersion + " for " + pluginApi + ". You are linked and ready to start.");
-            ChangeConnectionStatus(ConnectionStatus.Linked);
+            defaultTab.Log("Welcome to WebRcon v." + protocolVersion + " for " + pluginApi + ". You are linked and ready to start.\nPlease, type /help to show a list of available commands.");
+
+            //Before changing status to connected, load all commands and then send them first
+            //This prevents double-sending messages that were previously added manually to the command system
             commandsManager.LoadCommands();
+            ChangeConnectionStatus(ConnectionStatus.Connected);
+            SendCommandMessages();
+        }
+
+        void SendCommandMessages() {
+            for (int i = 0; i < commandsAdded.Count; i++)
+                SendCommand(commandsAdded[i]);
+        }
+
+        void SendCommand(Command command) {
+            CommandInfoMessage message = new CommandInfoMessage(command.name, command.signature.parameters, command.description);
+            NetworkMessage netMessage = message.Build();
+            client.Send(netMessage);
         }
 
         void OnCommand(CommandMessage message) {
@@ -167,7 +192,7 @@ namespace SickDev.WebRcon{
 
         void OnError(ErrorMessage message) {
             ErrorCode error = message.code;
-            if (isLinked && defaultTab != null)
+            if (isConnected && defaultTab != null)
                 defaultTab.Log("Error: " + error.ToString() + " - Code: " + (int)error);
 
             switch (error) {
@@ -188,7 +213,13 @@ namespace SickDev.WebRcon{
 
         void Connect() {
             ChangeConnectionStatus(ConnectionStatus.Connecting);
-            client.ConnectViaHost(Config.host, Config.port, OnConnectionAttempt);
+            client.ConnectViaHost(
+#if DEBUG
+                debugIP,
+#else
+                Config.host,
+#endif
+                Config.port, OnConnectionAttempt);
         }
 
         void OnConnectionAttempt(bool successful) {
@@ -233,9 +264,9 @@ namespace SickDev.WebRcon{
         public void Close() {
             if (!isInitialized)
                 return;
-            ChangeConnectionStatus(ConnectionStatus.Disconnected, ErrorCode.None);
-            if (isLinked)
+            if (isConnected)
                 defaultTab.Log("Disconnecting");
+            ChangeConnectionStatus(ConnectionStatus.Disconnected, ErrorCode.None);
             client.Close();
         }
 
@@ -253,7 +284,7 @@ namespace SickDev.WebRcon{
 
         void CreateContainer(Container container) {
             if (!isInitialized)
-                throw new NonInitializedException();
+                throw new NotConnectedException();
             containers.Add(container);
             container.SendNewContainerMessage();
         }

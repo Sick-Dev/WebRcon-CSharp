@@ -5,11 +5,11 @@ using SickDev.CommandSystem;
 namespace Test {
     class Program {
         static void Main(string[] args) {
-            WebConsole console = new WebConsole("N6VSFIUH8H");
+            WebConsole console = new WebConsole("6B3QJ01ZZ9");
             console.onError += Console_onError;
             console.onExceptionThrown += Console_onInnerExceptionThrown;
             console.Initialize();
-            console.onLinked += () => {
+            console.onConnected += () => {
                 console.GetTab(0).Log("<b>Lorem</b> ipsum dolor sit amet, consectetur adipiscing elit. Integer sagittis diam quis neque pretium lobortis. Fusce et arcu in ante vulputate dignissim nec vel mi. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Mauris ut congue lorem, eu ultricies urna. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec pretium ipsum vehicula orci mattis, vitae commodo urna tincidunt. Nam quis ultrices enim. Sed ullamcorper nunc finibus egestas accumsan. Duis nec enim faucibus nibh malesuada suscipit. Aliquam eleifend tortor nec ligula consectetur tincidunt. In aliquam blandit magna sit amet efficitur. ");
                 console.CreateTab("new Tab").Log("HOLA");
                 CommandsBuilder builder = new CommandsBuilder(typeof(Program));
@@ -21,7 +21,7 @@ namespace Test {
         }
 
         private static void Console_onInnerExceptionThrown(System.Exception exception) {
-            System.Console.WriteLine(exception.Message);
+            System.Console.WriteLine(exception.ToString());
         }
 
         private static void Console_onError(ErrorCode error) {
