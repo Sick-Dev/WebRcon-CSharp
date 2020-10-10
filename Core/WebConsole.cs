@@ -13,9 +13,6 @@ namespace SickDev.WebRcon{
     public class WebConsole {
         public static WebConsole initializedInstance { get; private set; }
 
-#if DEBUG
-        string debugIP;
-#endif
         Client client;
         List<Container> containers;
         ConnectionStatus status = ConnectionStatus.Disconnected;
@@ -100,13 +97,6 @@ namespace SickDev.WebRcon{
             SetupClient();
             Connect();
         }
-
-#if DEBUG
-        public void Initialize(string debugIP) {
-            this.debugIP = debugIP;
-            Initialize();
-        }
-#endif
 
         void SetupClient() {
             client = new Client();
@@ -213,13 +203,7 @@ namespace SickDev.WebRcon{
 
         void Connect() {
             ChangeConnectionStatus(ConnectionStatus.Connecting);
-            client.ConnectViaHost(
-#if DEBUG
-                debugIP,
-#else
-                Config.host,
-#endif
-                Config.port, OnConnectionAttempt);
+            client.ConnectViaHost(Config.host, Config.port, OnConnectionAttempt);
         }
 
         void OnConnectionAttempt(bool successful) {
